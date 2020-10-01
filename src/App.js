@@ -1,12 +1,14 @@
 import React from 'react';
-import firebase from "firebase";
-import RegisterPage from "./components/waypoint/RegisterPage";
+import Alert from "./components/app/containers/alert";
+import RegisterPage from "./components/waypoint/containers/RegisterPage";
+import TestButton from "./components/app/components/testButton";
 
 function App() {
-    console.log(firebase);
   return (
     <div className="App">
+        <TestButton />
       <RegisterPage />
+      <Alert />
     </div>
   );
 }
