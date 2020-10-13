@@ -79,7 +79,8 @@ class SignUp extends React.Component {
   };
 
   render() {
-    const {classes} = this.props;
+    const {classes, validationErrors} = this.props;
+    console.log(validationErrors);
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
@@ -92,110 +93,126 @@ class SignUp extends React.Component {
           </Typography>
           <Formik
             initialValues={initialFormValues}
+            validate={() => {
+              const errors = {};
+              if (validationErrors.email) {
+                errors.email = validationErrors.email;
+              }
+              return errors;
+            }}
             validationSchema={SignupSchema}
             onSubmit={(values, { setSubmitting }) => {
+              setSubmitting(true);
               this.props.onSubmit(values);
             }}
           >
             {({
-                values,
                 errors,
                 touched,
                 handleChange,
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
+                setSubmitting,
+                validateForm,
                 /* and other goodies */
-              }) => (
-              <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      error={errors.firstName && touched.firstName}
-                      helperText={errors.firstName && touched.firstName && errors.firstName}
-                      autoComplete="fname"
-                      name="firstName"
-                      variant="outlined"
-                      required
+              }) => {
+                if (isSubmitting !== this.props.submitting) {
+                  setSubmitting(this.props.submitting);
+                  validateForm();
+                }
+
+                return (
+                  <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          error={errors.firstName && touched.firstName}
+                          helperText={errors.firstName && touched.firstName && errors.firstName}
+                          autoComplete="fname"
+                          name="firstName"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="firstName"
+                          label="First Name"
+                          autoFocus
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          error={errors.lastName && touched.lastName}
+                          helperText={errors.lastName && touched.lastName && errors.lastName}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="lastName"
+                          label="Last Name"
+                          name="lastName"
+                          autoComplete="lname"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          error={errors.email && touched.email}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                          helperText={errors.email && touched.email && errors.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          error={errors.password && touched.password}
+                          helperText={errors.password && touched.password && errors.password}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={<Checkbox value="allowExtraEmails" color="primary"/>}
+                          label="I want to receive inspiration, marketing promotions and updates via email."
+                        />
+                      </Grid>
+                    </Grid>
+                    <Button
+                      type="submit"
                       fullWidth
-                      id="firstName"
-                      label="First Name"
-                      autoFocus
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      error={errors.lastName && touched.lastName}
-                      helperText={errors.lastName && touched.lastName && errors.lastName}
-                      variant="outlined"
-                      required
-                      fullWidth
-                      id="lastName"
-                      label="Last Name"
-                      name="lastName"
-                      autoComplete="lname"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      error={errors.email && touched.email}
-                      variant="outlined"
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
-                      helperText={errors.email && touched.email && errors.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      error={errors.password && touched.password}
-                      helperText={errors.password && touched.password && errors.password}
-                      variant="outlined"
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="current-password"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary"/>}
-                      label="I want to receive inspiration, marketing promotions and updates via email."
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Sign Up
-                </Button>
-                <Grid container justify="flex-end">
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            )}
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Sign Up
+                    </Button>
+                    <Grid container justify="flex-end">
+                      <Grid item>
+                        <Link href="#" variant="body2">
+                          Already have an account? Sign in
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                )
+              }}
           </Formik>
         </div>
         <Box mt={5}>
@@ -207,7 +224,11 @@ class SignUp extends React.Component {
 }
 
 SignUp.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired,
+  validationErrors: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+  }),
 };
 
 export default withStyles(styles)(SignUp);

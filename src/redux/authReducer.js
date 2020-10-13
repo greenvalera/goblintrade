@@ -1,15 +1,25 @@
+import {USER_SET_ERRORS, AUTH_SET_SUBMITTING} from "./types";
+
 const initialState = {
-    user: {
-        firstName: null,
-        lastName: null,
-    },
-    validationErrors: {
-        email: "",
-    }
+  user: {
+    firstName: null,
+    lastName: null,
+  },
+  validationErrors: {
+    email: "",
+  },
+  submitting: false,
 };
 
 export const authReducer = (state = initialState, action) => {
-    return state;
+  switch (action.type) {
+    case USER_SET_ERRORS:
+      return {...state, validationErrors: action.payload};
+    case AUTH_SET_SUBMITTING:
+      return {...state, submitting: action.payload};
+    default:
+      return state;
+  }
 };
 
 export default authReducer;
