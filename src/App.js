@@ -1,6 +1,6 @@
 import React from 'react';
 import Alert from "./components/app/containers/alert";
-import RegisterPage from "./components/waypoint/containers/RegisterPage";
+import RegisterPage from "./components/auth/containers/RegisterPage";
 import TestButton from "./components/app/components/testButton";
 
 function App() {

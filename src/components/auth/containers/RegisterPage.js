@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
-import SignUp from "../components/RegisterPage";
 import {useDispatch, useSelector} from "react-redux";
-import {register} from "../../../redux/actions";
+import SignUp from "../components/RegisterPage";
+import {register} from "../redux/actions";
 
 export default function RegisterPage() {
   const validationErrors = useSelector(state => state.auth.validationErrors);

@@ -1,0 +1,2 @@
+export const APP_SHOW_ALERT = 'APP_SHOW_ALERT';
+export const APP_HIDE_ALERT = 'APP_HIDE_ALERT';

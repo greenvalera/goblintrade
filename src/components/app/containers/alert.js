@@ -1,7 +1,7 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Alert from "../components/alert";
-import {hideAlert} from "../../../redux/actions";
+import {hideAlert} from "../redux/actions";
 
 
 export default function AlertContainer() {

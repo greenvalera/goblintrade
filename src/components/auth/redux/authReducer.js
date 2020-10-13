@@ -1,4 +1,4 @@
-import {USER_SET_ERRORS, AUTH_SET_SUBMITTING} from "./types";
+import {AUTH_SET_ERRORS, AUTH_SET_SUBMITTING} from "./types";
 
 const initialState = {
   user: {
@@ -13,7 +13,7 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_SET_ERRORS:
+    case AUTH_SET_ERRORS:
       return {...state, validationErrors: action.payload};
     case AUTH_SET_SUBMITTING:
       return {...state, submitting: action.payload};
