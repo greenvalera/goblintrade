@@ -14,7 +14,7 @@ export default function AlertContainer() {
         <Alert
             severity={alert.type || "error"}
             open={alert.open}
-            message={alert.message}
+            message={alert.message || ""}
             onClose={onClose}
         />
     )

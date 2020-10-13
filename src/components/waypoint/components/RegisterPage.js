@@ -14,6 +14,25 @@ import Typography from '@material-ui/core/Typography';
 import {createStyles, withStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from "./Copyright";
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
+
+const SignupSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .min(2, 'Минимум 2 символа')
+    .max(50, 'Максимум 50 символов')
+    .required('Укажите Имя'),
+  lastName: Yup.string()
+    .min(2, 'Минимум 2 символа')
+    .max(50, 'Максимум 50 символов')
+    .required('Укажите фамилию'),
+  email: Yup.string().email('Не верный формат email').required('Укажите email'),
+  password: Yup.string()
+    .min(6, 'Минимум 6 символов')
+    .max(50, 'Максимум 50 символов')
+    .required('Укажите пароль'),
+});
 
 const styles = theme => createStyles({
   paper: {
@@ -35,15 +54,17 @@ const styles = theme => createStyles({
   },
 });
 
+const initialFormValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: ""
+};
+
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      firstName: null,
-      lastName: null,
-      email: null,
-      password: null
-    };
+    this.state = {...initialFormValues};
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -69,82 +90,113 @@ class SignUp extends React.Component {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate onSubmit={this.onSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  variant="outlined"
-                  required
+          <Formik
+            initialValues={initialFormValues}
+            validationSchema={SignupSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              this.props.onSubmit(values);
+            }}
+          >
+            {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
+              <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      error={errors.firstName && touched.firstName}
+                      helperText={errors.firstName && touched.firstName && errors.firstName}
+                      autoComplete="fname"
+                      name="firstName"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="firstName"
+                      label="First Name"
+                      autoFocus
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      error={errors.lastName && touched.lastName}
+                      helperText={errors.lastName && touched.lastName && errors.lastName}
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="lastName"
+                      label="Last Name"
+                      name="lastName"
+                      autoComplete="lname"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      error={errors.email && touched.email}
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      helperText={errors.email && touched.email && errors.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      error={errors.password && touched.password}
+                      helperText={errors.password && touched.password && errors.password}
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={<Checkbox value="allowExtraEmails" color="primary"/>}
+                      label="I want to receive inspiration, marketing promotions and updates via email."
+                    />
+                  </Grid>
+                </Grid>
+                <Button
+                  type="submit"
                   fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  onChange={this.onChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                  onChange={this.onChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={this.onChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.onChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary"/>}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign Up
-            </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign Up
+                </Button>
+                <Grid container justify="flex-end">
+                  <Grid item>
+                    <Link href="#" variant="body2">
+                      Already have an account? Sign in
+                    </Link>
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+          </Formik>
         </div>
         <Box mt={5}>
           <Copyright/>

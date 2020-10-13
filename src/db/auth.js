@@ -4,24 +4,30 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 export function registerByUsernameAndPassword(email, password, firstName = '', lastName = '') {
-    return new Promise((resolve, reject) => {
-        auth.createUserWithEmailAndPassword(email, password)
-            .catch((error) => {
-                console.log('error');
-                console.log(error);
-                reject(error);
-            });
-        auth.onAuthStateChanged(user => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const authInfo = await auth.createUserWithEmailAndPassword(email, password);
+            const user = authInfo.user;
+            console.log(user);
             if (user) {
                 const userRef = firestore.collection('users').doc(user.uid);
                 const data = {
                     firstName,
                     lastName
                 };
-                userRef.set(data).then(result => {
-                    resolve(result);
-                })
+
+                try {
+                    await userRef.set(data);
+                    resolve();
+                } catch (error) {
+                    console.log(error);
+                    reject(error);
+                }
             }
-        });
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+
     });
 }

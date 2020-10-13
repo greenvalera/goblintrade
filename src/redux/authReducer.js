@@ -2,6 +2,9 @@ const initialState = {
     user: {
         firstName: null,
         lastName: null,
+    },
+    validationErrors: {
+        email: "",
     }
 };
 
