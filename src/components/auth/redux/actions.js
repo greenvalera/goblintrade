@@ -1,7 +1,7 @@
 import {registerByUsernameAndPassword} from "../../../db/auth";
 import {getValidationErrors} from "../services/authService";
 import {AUTH_SET_ERRORS, AUTH_SET_SUBMITTING} from "./types";
-import {showAlert} from "../../../redux/actions";
+import {showAlert} from "../../app/redux/actions";
 
 export function register(user) {
   return async dispatch => {

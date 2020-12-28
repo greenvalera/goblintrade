@@ -1,21 +1,30 @@
 import React, {Fragment} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import SignUp from "../components/RegisterPage";
-import {register} from "../redux/actions";
+import {register, setAuthErrors} from "../redux/actions";
 
 export default function RegisterPage() {
   const validationErrors = useSelector(state => state.auth.validationErrors);
   const submitting = useSelector(state => state.auth.submitting);
   console.log(validationErrors);
   const dispatch = useDispatch();
+
   const onSubmit = (user) => {
     dispatch(register(user));
   };
+
+  const onChange = () => {
+    dispatch(setAuthErrors({
+      email: "",
+    }));
+  };
+
   return (
     <Fragment>
       <SignUp
         submitting={submitting}
         onSubmit={onSubmit}
+        onChange={onChange}
         validationErrors={validationErrors}
       />
     </Fragment>

@@ -69,8 +69,8 @@ class SignUp extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(event) {
-    this.setState({[event.target.name]: event.target.value});
+  onChange() {
+    this.props.onChange();
   }
 
   onSubmit(event) {
@@ -80,7 +80,6 @@ class SignUp extends React.Component {
 
   render() {
     const {classes, validationErrors} = this.props;
-    console.log(validationErrors);
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
@@ -92,6 +91,7 @@ class SignUp extends React.Component {
             Sign up
           </Typography>
           <Formik
+            handleChange={this.onChange}
             initialValues={initialFormValues}
             validate={() => {
               const errors = {};
@@ -121,6 +121,11 @@ class SignUp extends React.Component {
                   setSubmitting(this.props.submitting);
                   validateForm();
                 }
+
+                const onChange = (event) => {
+                  handleChange(event);
+                  this.onChange(event);
+                };
 
                 return (
                   <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -157,19 +162,19 @@ class SignUp extends React.Component {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField
-                          error={errors.email && touched.email}
-                          variant="outlined"
-                          required
-                          fullWidth
-                          id="email"
-                          label="Email Address"
-                          name="email"
-                          autoComplete="email"
-                          helperText={errors.email && touched.email && errors.email}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                        />
+                            <TextField
+                              error={errors.email && touched.email}
+                              variant="outlined"
+                              required
+                              fullWidth
+                              id="email"
+                              label="Email Address"
+                              name="email"
+                              autoComplete="email"
+                              helperText={errors.email && touched.email && errors.email}
+                              onChange={onChange}
+                              onBlur={handleBlur}
+                            />
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
@@ -226,6 +231,7 @@ class SignUp extends React.Component {
 SignUp.propTypes = {
   submitting: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   validationErrors: PropTypes.shape({
     email: PropTypes.string.isRequired,
   }),
