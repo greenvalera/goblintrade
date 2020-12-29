@@ -1,13 +1,11 @@
 import React from 'react';
 import Alert from "./components/app/containers/alert";
-import RegisterPage from "./components/auth/containers/RegisterPage";
-import TestButton from "./components/app/components/testButton";
+import Router from './components/app/components/router';
 
 function App() {
   return (
     <div className="App">
-        <TestButton />
-      <RegisterPage />
+      <Router />
       <Alert />
     </div>
   );

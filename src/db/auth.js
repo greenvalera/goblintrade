@@ -8,7 +8,6 @@ export function registerByUsernameAndPassword(email, password, firstName = '', l
         try {
             const authInfo = await auth.createUserWithEmailAndPassword(email, password);
             const user = authInfo.user;
-            console.log(user);
             if (user) {
                 const userRef = firestore.collection('users').doc(user.uid);
                 const data = {
@@ -18,7 +17,7 @@ export function registerByUsernameAndPassword(email, password, firstName = '', l
 
                 try {
                     await userRef.set(data);
-                    resolve();
+                    resolve(data);
                 } catch (error) {
                     console.log(error);
                     reject(error);

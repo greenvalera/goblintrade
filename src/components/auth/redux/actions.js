@@ -1,6 +1,6 @@
 import {registerByUsernameAndPassword} from "../../../db/auth";
 import {getValidationErrors} from "../services/authService";
-import {AUTH_SET_ERRORS, AUTH_SET_SUBMITTING} from "./types";
+import {AUTH_SET_ERRORS, AUTH_SET_SUBMITTING, LOGIN_USER, LOGOUT_USER} from "./types";
 import {showAlert} from "../../app/redux/actions";
 
 export function register(user) {
@@ -13,8 +13,9 @@ export function register(user) {
       password,
       firstName,
       lastName
-    ).then(() => {
-      dispatch(showAlert(`You are registered as ${firstName} ${lastName}`, "success"));
+    ).then((user) => {
+      dispatch(setAuthSubmitting(false));
+      dispatch(loginUser(user));
     }).catch(error => {
       const validationErrors = getValidationErrors(error);
       if (validationErrors.email) {
@@ -38,5 +39,18 @@ export function setAuthSubmitting(submitting) {
   return {
     type: AUTH_SET_SUBMITTING,
     payload: submitting,
+  }
+}
+
+export function loginUser(user) {
+  return {
+    type: LOGIN_USER,
+    payload: user,
+  }
+}
+
+export function logoutUser() {
+  return {
+    type: LOGOUT_USER
   }
 }
