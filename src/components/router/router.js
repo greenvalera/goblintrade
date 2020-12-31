@@ -1,7 +1,7 @@
 import React from "react";
-import {BrowserRouter, Switch } from "react-router-dom";
+import { BrowserRouter, Switch } from "react-router-dom";
 import RuledRoute from "./ruledRoute";
-import RegisterPage from "../../auth/containers/RegisterPage";
+import { RegisterPage } from "components/auth";
 
 const Router = () => (
   <BrowserRouter>

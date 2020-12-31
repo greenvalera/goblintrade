@@ -1,7 +1,22 @@
-import {registerByUsernameAndPassword} from "../../../db/auth";
-import {getValidationErrors} from "../services/authService";
+import store from 'store';
+import {registerByUsernameAndPassword} from "db/auth";
 import {AUTH_SET_ERRORS, AUTH_SET_SUBMITTING, LOGIN_USER, LOGOUT_USER} from "./types";
-import {showAlert} from "../../app/redux/actions";
+import {showAlert} from "components/app/actions";
+
+const getValidationErrors = (error) => {
+  let validationErrors = {};
+  if (!error) return validationErrors;
+
+  switch (error.code) {
+    case 'auth/email-already-in-use':
+      validationErrors.email = error.message;
+      break;
+    default:
+      validationErrors = {};
+  }
+
+  return validationErrors;
+}
 
 export function register(user) {
   return async dispatch => {
@@ -43,6 +58,7 @@ export function setAuthSubmitting(submitting) {
 }
 
 export function loginUser(user) {
+  store.set('store.auth.user', user);
   return {
     type: LOGIN_USER,
     payload: user,

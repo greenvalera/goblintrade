@@ -6,7 +6,6 @@ import {register, setAuthErrors} from "../redux/actions";
 export default function RegisterPage() {
   const validationErrors = useSelector(state => state.auth.validationErrors);
   const submitting = useSelector(state => state.auth.submitting);
-  console.log(validationErrors);
   const dispatch = useDispatch();
 
   const onSubmit = (user) => {

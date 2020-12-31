@@ -39,7 +39,6 @@ const getRenderFunction = (Component, rule, auth) => {
 
 const RuledRoute = ({component: Component, rule, ...rest}) => {
   const auth = useSelector(state => state.auth);
-  console.log(auth);
 
   return (
     <Route {...rest} render={getRenderFunction(Component, rule, !!auth.user)} />

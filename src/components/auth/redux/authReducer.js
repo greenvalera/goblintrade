@@ -1,7 +1,8 @@
+import store from 'store';
 import {AUTH_SET_ERRORS, AUTH_SET_SUBMITTING, LOGIN_USER, LOGOUT_USER} from "./types";
 
 const initialState = {
-  user: null,
+  user: store.get('store.auth.user') || null,
   validationErrors: {
     email: "",
   },

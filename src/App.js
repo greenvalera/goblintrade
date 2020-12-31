@@ -1,6 +1,6 @@
 import React from 'react';
 import Alert from "./components/app/containers/alert";
-import Router from './components/app/components/router';
+import Router from './components/router';
 
 function App() {
   return (
