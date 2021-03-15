@@ -4,8 +4,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -15,24 +13,9 @@ import {createStyles, withStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from "./Copyright";
 import { Formik } from 'formik';
-import * as Yup from 'yup';
+import { registerSchema } from './fieldValidation';
+import {Email, Password} from "./fields";
 
-
-const SignupSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(2, 'Минимум 2 символа')
-    .max(50, 'Максимум 50 символов')
-    .required('Укажите Имя'),
-  lastName: Yup.string()
-    .min(2, 'Минимум 2 символа')
-    .max(50, 'Максимум 50 символов')
-    .required('Укажите фамилию'),
-  email: Yup.string().email('Не верный формат email').required('Укажите email'),
-  password: Yup.string()
-    .min(6, 'Минимум 6 символов')
-    .max(50, 'Максимум 50 символов')
-    .required('Укажите пароль'),
-});
 
 const styles = theme => createStyles({
   paper: {
@@ -64,7 +47,6 @@ const initialFormValues = {
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {...initialFormValues};
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -100,7 +82,7 @@ class SignUp extends React.Component {
               }
               return errors;
             }}
-            validationSchema={SignupSchema}
+            validationSchema={registerSchema}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
               this.props.onSubmit(values);
@@ -122,6 +104,7 @@ class SignUp extends React.Component {
                   validateForm();
                 }
 
+                //TODO useCallback to memoize
                 const onChange = (event) => {
                   handleChange(event);
                   this.onChange(event);
@@ -162,40 +145,19 @@ class SignUp extends React.Component {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                            <TextField
-                              error={errors.email && touched.email}
-                              variant="outlined"
-                              required
-                              fullWidth
-                              id="email"
-                              label="Email Address"
-                              name="email"
-                              autoComplete="email"
-                              helperText={errors.email && touched.email && errors.email}
-                              onChange={onChange}
-                              onBlur={handleBlur}
-                            />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          error={errors.password && touched.password}
-                          helperText={errors.password && touched.password && errors.password}
-                          variant="outlined"
-                          required
-                          fullWidth
-                          name="password"
-                          label="Password"
-                          type="password"
-                          id="password"
-                          autoComplete="current-password"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
+                        <Email
+                          error={errors.email}
+                          touched={touched.email}
+                          handleChange={onChange}
+                          handleBlur={handleBlur}
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <FormControlLabel
-                          control={<Checkbox value="allowExtraEmails" color="primary"/>}
-                          label="I want to receive inspiration, marketing promotions and updates via email."
+                        <Password
+                          error={errors.password}
+                          touched={touched.password}
+                          handleChange={handleChange}
+                          handleBlur={handleBlur}
                         />
                       </Grid>
                     </Grid>
@@ -210,7 +172,7 @@ class SignUp extends React.Component {
                     </Button>
                     <Grid container justify="flex-end">
                       <Grid item>
-                        <Link href="#" variant="body2">
+                        <Link href="/login" variant="body2">
                           Already have an account? Sign in
                         </Link>
                       </Grid>

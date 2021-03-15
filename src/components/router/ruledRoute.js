@@ -15,7 +15,7 @@ const authenticatedRender = (Component, auth) => {
   return (props) => (
     auth === true
       ? <Component {...props} />
-      : <Redirect to={'/register'} />
+      : <Redirect to={'/login'} />
   );
 };
 

@@ -1,5 +1,5 @@
 import store from 'store';
-import {registerByUsernameAndPassword} from "db/auth";
+import {registerByUsernameAndPassword, signInWithEmailAndPassword} from "db/auth";
 import {AUTH_SET_ERRORS, AUTH_SET_SUBMITTING, LOGIN_USER, LOGOUT_USER} from "./types";
 import {showAlert} from "components/app/actions";
 
@@ -40,6 +40,20 @@ export function register(user) {
         dispatch(showAlert(error.message));
       }
     });
+  }
+}
+
+export function auth(user) {
+  return async dispatch => {
+    const { email, password } = user;
+
+    dispatch(setAuthSubmitting(true));
+    try {
+      const user = await signInWithEmailAndPassword(email, password);
+      dispatch(loginUser(user));
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

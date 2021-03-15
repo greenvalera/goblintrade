@@ -30,3 +30,29 @@ export function registerByUsernameAndPassword(email, password, firstName = '', l
 
     });
 }
+
+export async function signInWithEmailAndPassword(email, password) {
+    try {
+        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+        const user = {
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+        };
+
+        try {
+            const doc = await firestore.collection('users').doc(user.uid).get();
+            const {firstName, lastName} = doc.data();
+
+            return {
+                ...user,
+                firstName,
+                lastName
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    } catch(error) {
+        console.log(error)
+        throw new Error(error.message);
+    }
+}
