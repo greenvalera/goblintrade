@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
 import RuledRoute from "./ruledRoute";
-import { LoginPage, RegisterPage } from "components/auth";
+import { LoginPage, RegisterPage, FirebaseuiLogin } from "components/auth";
 
 const Router = () => (
   <BrowserRouter>
@@ -10,7 +10,7 @@ const Router = () => (
         <h1>Home page</h1>
       )} />
       <RuledRoute rule={'guest'} path="/register" component={RegisterPage} />
-      <RuledRoute rule={'guest'} path="/login" component={LoginPage} />
+      <RuledRoute rule={'guest'} path="/login" component={FirebaseuiLogin} />
     </Switch>
   </BrowserRouter>
 );
