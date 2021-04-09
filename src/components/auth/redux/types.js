@@ -1,4 +1,0 @@
-export const AUTH_SET_ERRORS = 'AUTH_SET_ERRORS';
-export const AUTH_SET_SUBMITTING = 'AUTH_SET_SUBMITTING';
-export const LOGIN_USER = 'LOGIN_USER';
-export const LOGOUT_USER = 'LOGOUT_USER';

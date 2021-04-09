@@ -1,5 +1,5 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 
 // Add the Firebase products that you want to use
 import "firebase/auth";
@@ -17,4 +17,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+export const EmailProviderID = firebase.auth.EmailAuthProvider.PROVIDER_ID;
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
 export default firebase;
